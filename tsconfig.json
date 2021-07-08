@@ -14,5 +14,6 @@
     "src/app.ts",
     "src/config/index.ts",
     "src/utils/common.util.ts",
+    "src/utils/api.util.ts",
   ]
 }

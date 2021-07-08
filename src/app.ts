@@ -11,6 +11,7 @@ import { AudioConfig, SpeechSynthesizer } from "microsoft-cognitiveservices-spee
 // Import custom modules
 import { APP_CONFIG, GLOBAL_VARIABLES } from './config/index';
 import { getLoggerLevel, setLoggerLevel } from './utils/common.util';
+import { createTextToSpeech, issueAccessToken } from "./utils/api.util";
 const readline = require('linebyline');
 
 // Import bot configuration/variables from .env file in root folder
@@ -22,23 +23,26 @@ setLoggerLevel();
 // Logger initialise
 const _logger = getLoggerLevel();
 
-const CUSTOM_SPEECH_Subscription_Key = process.env.CUSTOM_SPEECH_SUBSCRIPTION_KEY || '';
-const CUSTOM_SPEECH_Region = process.env.CUSTOM_SPEECH_REGION || '';
+APP_CONFIG.CUSTOM_SPEECH_Subscription_Key = process.env.CUSTOM_SPEECH_SUBSCRIPTION_KEY || '';
+APP_CONFIG.CUSTOM_SPEECH_Region = process.env.CUSTOM_SPEECH_REGION || '';
 
-_logger.info(`CUSTOM_SPEECH_Subscription_Key: ${CUSTOM_SPEECH_Subscription_Key}`);
-_logger.info(`CUSTOM_SPEECH_Region: ${CUSTOM_SPEECH_Region}`);
+_logger.info(`CUSTOM_SPEECH_Subscription_Key: ${APP_CONFIG.CUSTOM_SPEECH_Subscription_Key}`);
+_logger.info(`CUSTOM_SPEECH_Region: ${APP_CONFIG.CUSTOM_SPEECH_Region}`);
 
-readFileByLine('src/assets/doc/data_prep.txt');
+// readFileByLine('src/assets/doc/data_prep.txt');
 
-GLOBAL_VARIABLES.arrLine.forEach((utterance: string, index: number) => {
-  _logger.debug(`${index}: ${utterance}`);
+// GLOBAL_VARIABLES.arrLine.forEach((utterance: string, index: number) => {
+//   _logger.debug(`${index}: ${utterance}`);
 
-  createAudioByLine(utterance);
-});
+//   // createAudioByLine(utterance);
+// });
+
+issueAccessToken();
+createTextToSpeech();
 
 ////////////////////////////////////////////////////////////////////////////////
 function createAudioByLine(utterance: string) {
-  const speechConfig = sdk.SpeechConfig.fromSubscription(CUSTOM_SPEECH_Subscription_Key, CUSTOM_SPEECH_Region);
+  const speechConfig = sdk.SpeechConfig.fromSubscription(APP_CONFIG.CUSTOM_SPEECH_Subscription_Key, APP_CONFIG.CUSTOM_SPEECH_Region);
   const audioConfig = AudioConfig.fromAudioFileOutput(`src/assets/audio/${utterance}.wav`);
 
   const synthesizer = new SpeechSynthesizer(speechConfig, audioConfig);
