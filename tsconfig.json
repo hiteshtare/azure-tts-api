@@ -1,0 +1,18 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "sourceMap": true, //for debugging
+    "declaration": false,
+    "removeComments": true,
+    "outDir": "./dist",
+    "allowJs": true, //for injecting any js lib
+    "strict": true
+  },
+  "files": [
+    "src/app.ts",
+    "src/config/index.ts",
+    "src/utils/common.util.ts",
+  ]
+}
