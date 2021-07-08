@@ -37,7 +37,7 @@ _logger.info(`CUSTOM_SPEECH_Region: ${APP_CONFIG.CUSTOM_SPEECH_Region}`);
 //   // createAudioByLine(utterance);
 // });
 
-issueAccessToken();
+// issueAccessToken();
 createTextToSpeech();
 
 ////////////////////////////////////////////////////////////////////////////////

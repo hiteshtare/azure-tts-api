@@ -3,6 +3,7 @@ import request = require('request-promise');
 
 import { getLoggerLevel } from './common.util';
 import { GLOBAL_VARIABLES, APP_CONFIG } from '../config';
+import axios from 'axios';
 
 // Logger initialise
 const _logger = getLoggerLevel();
@@ -49,22 +50,20 @@ export async function createTextToSpeech(): Promise<void> {
     'Authorization': `Bearer ${GLOBAL_VARIABLES.accesToken}`
   }
 
-  const payload = `<speak version='1.0' xml:lang='en-US'><voice xml:lang='en-US' xml:gender='Female'\n    name='en-US-AriaNeural'>\n        Hello world. Please kill corona\n</voice></speak>`;
-  const postOptions = {
-    method: 'POST',
-    uri: uri,
-    headers: headers,
-    body: payload
-  };
-  _logger.info(`postOptions`);
-  _logger.debug(postOptions);
+  const payload = "<speak version='1.0' xml:lang='en-US'><voice xml:lang='en-US' xml:gender='Female'\n    name='en-US-AriaNeural'>\n        Hello Hitesh. Please kill corona\n</voice></speak>"
+  // _logger.info(`postOptions`);
+  // _logger.debug(postOptions);
 
-  return await request(postOptions)
-    .then(function (resp: any) {
-      _logger.info(`TextToSpeech created successfully.`);
-      _logger.debug(resp);
-      // GLOBAL_VARIABLES.accesToken = resp;
-    }).catch((err) => {
-      _logger.error(err);
-    });
+  axios({
+    method: 'post',
+    url: uri,
+    headers: headers,
+    data: payload
+  }).then((response) => {
+    // console.log(response.data);
+    console.log(response.status);
+    console.log(response.statusText);
+    console.log(response.headers);
+    console.log(response.config);
+  });
 }
