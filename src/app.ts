@@ -1,4 +1,6 @@
+// Import node modules
 import { createReadStream, readFileSync } from "fs";
+import { createInterface } from 'readline';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 
@@ -7,8 +9,9 @@ import { getLogger, Logger } from 'log4js';
 import { AudioConfig, SpeechSynthesizer } from "microsoft-cognitiveservices-speech-sdk";
 
 // Import custom modules
-import { APP_CONFIG } from './config/index';
+import { APP_CONFIG, GLOBAL_VARIABLES } from './config/index';
 import { getLoggerLevel, setLoggerLevel } from './utils/common.util';
+const readline = require('linebyline');
 
 // Import bot configuration/variables from .env file in root folder
 const ENV_FILE = path.join(__dirname, '.env');
@@ -25,26 +28,43 @@ const CUSTOM_SPEECH_Region = process.env.CUSTOM_SPEECH_REGION || '';
 _logger.info(`CUSTOM_SPEECH_Subscription_Key: ${CUSTOM_SPEECH_Subscription_Key}`);
 _logger.info(`CUSTOM_SPEECH_Region: ${CUSTOM_SPEECH_Region}`);
 
-const speechConfig = sdk.SpeechConfig.fromSubscription(CUSTOM_SPEECH_Subscription_Key, CUSTOM_SPEECH_Region);
-const audioConfig = AudioConfig.fromAudioFileOutput("path-to-file.wav");
+readFileByLine('src/assets/doc/data_prep.txt');
 
-const synthesizer = new SpeechSynthesizer(speechConfig, audioConfig);
-synthesizer.speakTextAsync(
-  "A simple test to write to a file.",
-  result => {
-    synthesizer.close();
-    if (result) {
-      // return result as stream
-      return createReadStream("path-to-file.wav");
-    }
-  },
-  error => {
-    console.log(error);
-    synthesizer.close();
-  });
+GLOBAL_VARIABLES.arrLine.forEach((utterance: string, index: number) => {
+  _logger.debug(`${index}: ${utterance}`);
 
+  createAudioByLine(utterance);
+});
 
-function xmlToString(filePath: string) {
-  const xml = readFileSync(filePath, "utf8");
-  return xml;
+////////////////////////////////////////////////////////////////////////////////
+function createAudioByLine(utterance: string) {
+  const speechConfig = sdk.SpeechConfig.fromSubscription(CUSTOM_SPEECH_Subscription_Key, CUSTOM_SPEECH_Region);
+  const audioConfig = AudioConfig.fromAudioFileOutput(`src/assets/audio/${utterance}.wav`);
+
+  const synthesizer = new SpeechSynthesizer(speechConfig, audioConfig);
+  synthesizer.speakTextAsync(
+    utterance,
+    result => {
+      synthesizer.close();
+      if (result) {
+        // return result as stream
+        return createReadStream(`src/assets/audio/${utterance}.wav`);
+      }
+    },
+    error => {
+      console.log(error);
+      synthesizer.close();
+    });
+}
+
+function readFileByLine(path: string) {
+  _logger.warn(`readFileByLine`);
+  GLOBAL_VARIABLES.arrLine = [];
+
+  var array = readFileSync(path).toString().split("\n");
+  for (let i in array) {
+    //To check string is valid
+    if (array[i].length > 0)
+      GLOBAL_VARIABLES.arrLine.push('' + array[i]);
+  }
 }
