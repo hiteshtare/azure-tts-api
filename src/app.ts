@@ -27,38 +27,27 @@ _logger.info(`CUSTOM_SPEECH_Subscription_Key: ${APP_CONFIG.CUSTOM_SPEECH_Subscri
 _logger.info(`CUSTOM_SPEECH_Region: ${APP_CONFIG.CUSTOM_SPEECH_Region}`);
 
 //Reset Global Variables
-GLOBAL_VARIABLES.arrSSML = [];
 GLOBAL_VARIABLES.arrLine = [];
+// GLOBAL_VARIABLES.currentVoice = 'en-IN-Ravi';
+// GLOBAL_VARIABLES.currentVoice = 'en-IN-NeerjaNeural';
+GLOBAL_VARIABLES.currentVoice = 'en-US-AriaNeural';
+GLOBAL_VARIABLES.arrSSML = [];
 
 readFileByLine('src/assets/doc/data_prep.txt');
 
+createAudioSamplesForVoiceSelected();
 
-GLOBAL_VARIABLES.arrLine.forEach((utterance: string, index: number) => {
-  _logger.debug(`${index}: ${utterance}`);
-
-  updateSSMLWithUtterance(utterance);
-
-  // createAudioByLine(utterance);
-});
-
-GLOBAL_VARIABLES.arrSSML.forEach(async (ssml: string, index: number) => {
-  // _logger.info('New SSML');
-  // _logger.debug(JSON.stringify(ssml, null, 4));
-
-  await createAudioByLine(GLOBAL_VARIABLES.arrLine[index], ssml);
-});
-
-// createAudioByLine('test', '');
+//createAudioSamplesForAllVoices();
 
 function updateSSMLWithUtterance(utterance: string) {
   _logger.warn(`updateSSMLWithUtterance`);
 
   //read XML file
-  // const data = readFileSync(`src/assets/sample/ssml_en-US-AriaNeural.xml`, "utf-8");
+  // const data = readFileSync(`src/assets/ssml/en-US-AriaNeural.xml`, "utf-8");
 
   //Indian Accents
-  // const data = readFileSync(`src/assets/sample/ssml_en-IN-NeerjaNeural.xml`, "utf-8");
-  const data = readFileSync(`src/assets/sample/ssml_en-IN-Ravi.xml`, "utf-8");
+  // const data = readFileSync(`src/assets/ssml/en-IN-NeerjaNeural.xml`, "utf-8");
+  const data = readFileSync(`src/assets/ssml/${GLOBAL_VARIABLES.currentVoice}.xml`, "utf-8");
 
   // convert XML data to JSON object
   parseString(data, (err, result) => {
@@ -80,12 +69,12 @@ function updateSSMLWithUtterance(utterance: string) {
 }
 
 async function createAudioByLine(utterance: string, ssml: string) {
-  _logger.info('Utterance');
-  _logger.debug(utterance);
+  // _logger.info('Utterance');
+  // _logger.debug(utterance);
   // _logger.info('New SSML');
   // _logger.debug(ssml);
 
-  const fileName = utterance.replace(/ /g, "_");
+  const fileName = `${utterance.replace(/ /g, "_")}_${GLOBAL_VARIABLES.currentVoice}`;
   const path = `src/assets/audio/${fileName}.wav`;
   const speechConfig = sdk.SpeechConfig.fromSubscription(APP_CONFIG.CUSTOM_SPEECH_Subscription_Key, APP_CONFIG.CUSTOM_SPEECH_Region);
   const audioConfig = AudioConfig.fromAudioFileOutput(path);
@@ -127,4 +116,49 @@ function xmlToString(filePath: string) {
 
   const xml = readFileSync(filePath, "utf8");
   return xml;
+}
+
+
+async function createAudioSamplesForAllVoices() {
+  _logger.fatal(`createAudioSamplesForAllVoices`);
+
+  APP_CONFIG.voiceConfigured.forEach((voice: string) => {
+    _logger.warn(`Preparing audio samples for VOICE: ${voice}`);
+
+    GLOBAL_VARIABLES.currentVoice = voice;
+    GLOBAL_VARIABLES.arrSSML = [];
+
+    GLOBAL_VARIABLES.arrLine.forEach((utterance: string, index: number) => {
+      _logger.debug(`${index}: ${utterance}`);
+
+      updateSSMLWithUtterance(utterance);
+
+      // createAudioByLine(utterance);
+    });
+
+    GLOBAL_VARIABLES.arrSSML.forEach(async (ssml: string, index: number) => {
+      // _logger.info('New SSML');
+      // _logger.debug(JSON.stringify(ssml, null, 4));
+
+      await createAudioByLine(GLOBAL_VARIABLES.arrLine[index], ssml);
+    });
+
+  });
+}
+
+async function createAudioSamplesForVoiceSelected() {
+  _logger.fatal(`createAudioSamplesForVoiceSelected`);
+
+  GLOBAL_VARIABLES.arrLine.forEach((utterance: string, index: number) => {
+    _logger.debug(`${index}: ${utterance}`);
+
+    updateSSMLWithUtterance(utterance);
+  });
+
+  GLOBAL_VARIABLES.arrSSML.forEach(async (ssml: string, index: number) => {
+    // _logger.info('New SSML');
+    // _logger.debug(JSON.stringify(ssml, null, 4));
+
+    await createAudioByLine(GLOBAL_VARIABLES.arrLine[index], ssml);
+  });
 }
