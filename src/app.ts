@@ -50,11 +50,36 @@ GLOBAL_VARIABLES.arrSSML.forEach(async (ssml: string, index: number) => {
 
 // createAudioByLine('test', '');
 
+function updateSSMLWithUtterance(utterance: string) {
+  _logger.warn(`updateSSMLWithUtterance`);
+
+  //read XML file
+  const data = readFileSync(`src/assets/sample/ssml.xml`, "utf-8");
+
+  // convert XML data to JSON object
+  parseString(data, (err, result) => {
+    if (err) {
+      throw err;
+    }
+    // _logger.info('SSML')
+    // _logger.debug(result.speak.voice[0]['$']['name']);
+
+    result.speak.voice[0]['_'] = `${utterance}`;
+
+    //Replacing voice text with utterance
+    _logger.debug(result.speak.voice[0]['_']);
+
+    const builder = new Builder();
+    let newData = builder.buildObject(result);
+    GLOBAL_VARIABLES.arrSSML.push(newData);
+  });// end of parseString
+}
+
 async function createAudioByLine(utterance: string, ssml: string) {
   _logger.info('Utterance');
   _logger.debug(utterance);
-  _logger.info('New SSML');
-  _logger.debug(ssml);
+  // _logger.info('New SSML');
+  // _logger.debug(ssml);
 
   const fileName = utterance.replace(/ /g, "_");
   const path = `src/assets/audio/${fileName}.wav`;
@@ -80,29 +105,6 @@ async function createAudioByLine(utterance: string, ssml: string) {
       _logger.error(error);
       synthesizer.close();
     });
-}
-
-function updateSSMLWithUtterance(utterance: string) {
-  _logger.warn(`updateSSMLWithUtterance`);
-
-  //read XML file
-  const data = readFileSync(`src/assets/sample/ssml.xml`, "utf-8");
-
-  // convert XML data to JSON object
-  parseString(data, (err, result) => {
-    if (err) {
-      throw err;
-    }
-
-    result.speak.voice[0]['_'] = `${utterance}`;
-
-    //Replacing voice text with utterance
-    _logger.debug(result.speak.voice[0]['_']);
-
-    const builder = new Builder();
-    let newData = builder.buildObject(result);
-    GLOBAL_VARIABLES.arrSSML.push(newData);
-  });// end of parseString
 }
 
 function readFileByLine(path: string) {
