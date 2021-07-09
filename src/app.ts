@@ -56,7 +56,8 @@ async function createAudioByLine(utterance: string, ssml: string) {
   _logger.info('New SSML');
   _logger.debug(ssml);
 
-  const path = `src/assets/audio/${utterance}.wav`;
+  const fileName = utterance.replace(/ /g, "_");
+  const path = `src/assets/audio/${fileName}.wav`;
   const speechConfig = sdk.SpeechConfig.fromSubscription(APP_CONFIG.CUSTOM_SPEECH_Subscription_Key, APP_CONFIG.CUSTOM_SPEECH_Region);
   const audioConfig = AudioConfig.fromAudioFileOutput(path);
 
