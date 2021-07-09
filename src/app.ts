@@ -1,6 +1,5 @@
 // Import node modules
 import { createReadStream, readFileSync } from "fs";
-import { createInterface } from 'readline';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 
@@ -11,8 +10,6 @@ import { AudioConfig, SpeechSynthesizer } from "microsoft-cognitiveservices-spee
 // Import custom modules
 import { APP_CONFIG, GLOBAL_VARIABLES } from './config/index';
 import { getLoggerLevel, setLoggerLevel } from './utils/common.util';
-import { createTextToSpeech, issueAccessToken } from "./utils/api.util";
-const readline = require('linebyline');
 
 // Import bot configuration/variables from .env file in root folder
 const ENV_FILE = path.join(__dirname, '.env');
@@ -37,22 +34,23 @@ _logger.info(`CUSTOM_SPEECH_Region: ${APP_CONFIG.CUSTOM_SPEECH_Region}`);
 //   // createAudioByLine(utterance);
 // });
 
-// issueAccessToken();
-createTextToSpeech();
+createAudioByLine();
 
 ////////////////////////////////////////////////////////////////////////////////
-function createAudioByLine(utterance: string) {
+function createAudioByLine() {
   const speechConfig = sdk.SpeechConfig.fromSubscription(APP_CONFIG.CUSTOM_SPEECH_Subscription_Key, APP_CONFIG.CUSTOM_SPEECH_Region);
-  const audioConfig = AudioConfig.fromAudioFileOutput(`src/assets/audio/${utterance}.wav`);
+  const audioConfig = AudioConfig.fromAudioFileOutput(`src/assets/audio/ssml.wav`);
+
+  const ssml = xmlToString(`src/assets/sample/ssml.xml`);
 
   const synthesizer = new SpeechSynthesizer(speechConfig, audioConfig);
-  synthesizer.speakTextAsync(
-    utterance,
+  synthesizer.speakSsmlAsync(
+    ssml,
     result => {
       synthesizer.close();
       if (result) {
         // return result as stream
-        return createReadStream(`src/assets/audio/${utterance}.wav`);
+        return createReadStream(`src/assets/audio/ssml.wav`);
       }
     },
     error => {
@@ -71,4 +69,9 @@ function readFileByLine(path: string) {
     if (array[i].length > 0)
       GLOBAL_VARIABLES.arrLine.push('' + array[i]);
   }
+}
+
+function xmlToString(filePath: string) {
+  const xml = readFileSync(filePath, "utf8");
+  return xml;
 }
