@@ -7,5 +7,6 @@ export const APP_CONFIG = {
 };
 
 export const GLOBAL_VARIABLES = {
-  arrLine: ['']
+  arrLine: [''],
+  arrSSML: ['']
 }
