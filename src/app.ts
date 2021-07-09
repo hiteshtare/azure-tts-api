@@ -54,7 +54,11 @@ function updateSSMLWithUtterance(utterance: string) {
   _logger.warn(`updateSSMLWithUtterance`);
 
   //read XML file
-  const data = readFileSync(`src/assets/sample/ssml.xml`, "utf-8");
+  // const data = readFileSync(`src/assets/sample/ssml_en-US-AriaNeural.xml`, "utf-8");
+
+  //Indian Accents
+  // const data = readFileSync(`src/assets/sample/ssml_en-IN-NeerjaNeural.xml`, "utf-8");
+  const data = readFileSync(`src/assets/sample/ssml_en-IN-Ravi.xml`, "utf-8");
 
   // convert XML data to JSON object
   parseString(data, (err, result) => {
