@@ -28,14 +28,22 @@ _logger.info(`CUSTOM_SPEECH_Region: ${APP_CONFIG.CUSTOM_SPEECH_Region}`);
 
 //Reset Global Variables
 GLOBAL_VARIABLES.arrLine = [];
-// GLOBAL_VARIABLES.currentVoice = 'en-IN-Ravi';
-// GLOBAL_VARIABLES.currentVoice = 'en-IN-NeerjaNeural';
-GLOBAL_VARIABLES.currentVoice = 'en-US-AriaNeural';
 GLOBAL_VARIABLES.arrSSML = [];
 
 readFileByLine('src/assets/doc/data_prep.txt');
 
-createAudioSamplesForVoiceSelected();
+GLOBAL_VARIABLES.currentVoice = '';
+
+// GLOBAL_VARIABLES.currentVoice = 'en-IN-Ravi';
+// GLOBAL_VARIABLES.currentVoice = 'en-IN-NeerjaNeural';
+// GLOBAL_VARIABLES.currentVoice = 'en-US-AriaNeural';
+
+if (GLOBAL_VARIABLES.currentVoice) {
+  createAudioSamplesForVoiceSelected();
+}
+else {
+  _logger.error(`ERROR: Kindly configured currentVoice!`);
+}
 
 //createAudioSamplesForAllVoices();
 
