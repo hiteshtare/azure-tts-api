@@ -35,7 +35,7 @@ readFileByLine('src/assets/doc/data_prep.txt');
 GLOBAL_VARIABLES.currentVoice = '';
 
 // GLOBAL_VARIABLES.currentVoice = 'en_IN_Ravi';
-GLOBAL_VARIABLES.currentVoice = 'en_IN_NeerjaNeural';
+// GLOBAL_VARIABLES.currentVoice = 'en_IN_NeerjaNeural';
 // GLOBAL_VARIABLES.currentVoice = 'en_US_AriaNeural';
 
 if (GLOBAL_VARIABLES.currentVoice) {
@@ -83,7 +83,7 @@ async function createAudioByLine(utterance: string, ssml: string) {
   // _logger.debug(ssml);
 
   const fileName = `${utterance.replace(/ /g, "_")}_${GLOBAL_VARIABLES.currentVoice}`;
-  const path = `src/assets/audio/${fileName}.wav`;
+  const path = `src/assets/audio/${fileName}.mp3`;
   const speechConfig = sdk.SpeechConfig.fromSubscription(APP_CONFIG.CUSTOM_SPEECH_Subscription_Key, APP_CONFIG.CUSTOM_SPEECH_Region);
   const audioConfig = AudioConfig.fromAudioFileOutput(path);
 
