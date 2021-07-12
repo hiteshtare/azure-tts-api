@@ -34,9 +34,9 @@ readFileByLine('src/assets/doc/data_prep.txt');
 
 GLOBAL_VARIABLES.currentVoice = '';
 
-// GLOBAL_VARIABLES.currentVoice = 'en-IN-Ravi';
-// GLOBAL_VARIABLES.currentVoice = 'en-IN-NeerjaNeural';
-// GLOBAL_VARIABLES.currentVoice = 'en-US-AriaNeural';
+// GLOBAL_VARIABLES.currentVoice = 'en_IN_Ravi';
+GLOBAL_VARIABLES.currentVoice = 'en_IN_NeerjaNeural';
+// GLOBAL_VARIABLES.currentVoice = 'en_US_AriaNeural';
 
 if (GLOBAL_VARIABLES.currentVoice) {
   createAudioSamplesForVoiceSelected();
@@ -51,10 +51,10 @@ function updateSSMLWithUtterance(utterance: string) {
   _logger.warn(`updateSSMLWithUtterance`);
 
   //read XML file
-  // const data = readFileSync(`src/assets/ssml/en-US-AriaNeural.xml`, "utf-8");
+  // const data = readFileSync(`src/assets/ssml/en_US_AriaNeural.xml`, "utf-8");
 
   //Indian Accents
-  // const data = readFileSync(`src/assets/ssml/en-IN-NeerjaNeural.xml`, "utf-8");
+  // const data = readFileSync(`src/assets/ssml/en_IN_NeerjaNeural.xml`, "utf-8");
   const data = readFileSync(`src/assets/ssml/${GLOBAL_VARIABLES.currentVoice}.xml`, "utf-8");
 
   // convert XML data to JSON object
