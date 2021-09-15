@@ -1,0 +1,15 @@
+Total meetings completed by Setral
+Total meetings completed by Nutral
+Total meetings completed by Targocid
+Meetings Scheduled by Setral
+Meetings Scheduled by Nutral
+Meetings Scheduled by Targocid
+Incomplete meetings by Setral
+Incomplete meetings by Nutral
+Incomplete meetings by Targocid
+Active polls by Setral
+Active polls by Nutral
+Active polls by Targocid
+Customers not responded by Setral
+Customers not responded by Nutral
+Customers not responded by Targocid

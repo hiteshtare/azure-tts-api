@@ -1,0 +1,36 @@
+Total meetings completed by product	
+Meetings Scheduled by product	
+Incomplete meetings by product	
+Active polls by product	
+Customers not responded by product	
+Product with Expiry
+Setral
+Nutral
+Kanexis
+Clexane
+Targocid
+Total meetings completed by Setral
+Total meetings completed by Nutral
+Total meetings completed by Kanexis
+Total meetings completed by Clexane
+Total meetings completed by Targocid
+Meetings Scheduled by Setral
+Meetings Scheduled by Nutral
+Meetings Scheduled by Kanexis
+Meetings Scheduled by Clexane
+Meetings Scheduled by Targocid
+Incomplete meetings by Setral
+Incomplete meetings by Nutral
+Incomplete meetings by Kanexis
+Incomplete meetings by Clexane
+Incomplete meetings by Targocid
+Active polls by Setral
+Active polls by Nutral
+Active polls by Kanexis
+Active polls by Clexane
+Active polls by Targocid
+Customers not responded by Setral
+Customers not responded by Nutral
+Customers not responded by Kanexis
+Customers not responded by Clexane
+Customers not responded by Targocid
